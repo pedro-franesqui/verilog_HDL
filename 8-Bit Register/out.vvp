@@ -1,0 +1,570 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision - 10;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0112C4D8 .scope module, "tb_register_file" "tb_register_file" 2 4;
+ .timescale -9 -10;
+P_0112FCBC .param/l "CLK_PERIOD" 2 5, +C4<01010>;
+v011727C8_0 .var "clk", 0 0;
+v01171D20_0 .var "r_addr1", 2 0;
+v01172458_0 .var "r_addr2", 2 0;
+v01171E80_0 .net "r_data1", 7 0, L_01174570; 1 drivers
+v011724B0_0 .net "r_data2", 7 0, L_011749D0; 1 drivers
+v01172090_0 .var "rst", 0 0;
+v011720E8_0 .var "w_addr", 2 0;
+v01171DD0_0 .var "w_data", 7 0;
+v011725B8_0 .var "we", 0 0;
+S_0112C3C8 .scope task, "test_all_addresses" "test_all_addresses" 2 112, 2 112, S_0112C4D8;
+ .timescale -9 -10;
+v011726C0_0 .var/i "i", 31 0;
+TD_tb_register_file.test_all_addresses ;
+    %set/v v011726C0_0, 0, 32;
+T_0.0 ;
+    %load/v 8, v011726C0_0, 32;
+   %cmpi/s 8, 8, 32;
+    %jmp/0xz T_0.1, 5;
+    %load/v 8, v011726C0_0, 32;
+    %set/v v011721F0_0, 8, 3;
+    %ix/load 0, 16, 0;
+    %load/vp0 8, v011726C0_0, 32;
+    %set/v v011722F8_0, 8, 8;
+    %fork TD_tb_register_file.write_reg, S_0112BDF0;
+    %join;
+    %delay 10, 0;
+    %load/v 8, v011726C0_0, 32;
+    %set/v v01171D78_0, 8, 3;
+    %set/v v01172400_0, 0, 3;
+    %ix/load 0, 16, 0;
+    %load/vp0 8, v011726C0_0, 32;
+    %set/v v01172350_0, 8, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %ix/load 0, 1, 0;
+    %load/vp0/s 8, v011726C0_0, 32;
+    %set/v v011726C0_0, 8, 32;
+    %jmp T_0.0;
+T_0.1 ;
+    %end;
+S_0112C010 .scope task, "timing_tests" "timing_tests" 2 123, 2 123, S_0112C4D8;
+ .timescale -9 -10;
+TD_tb_register_file.timing_tests ;
+    %movi 8, 170, 8;
+    %set/v v01171DD0_0, 8, 8;
+    %set/v v011720E8_0, 0, 3;
+    %set/v v011725B8_0, 1, 1;
+    %delay 80, 0;
+    %wait E_01129638;
+    %delay 10, 0;
+    %set/v v01171D78_0, 0, 3;
+    %set/v v01172400_0, 0, 3;
+    %movi 8, 16, 8;
+    %set/v v01172350_0, 8, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %delay 20, 0;
+    %movi 8, 187, 8;
+    %set/v v01171DD0_0, 8, 8;
+    %wait E_01129638;
+    %delay 10, 0;
+    %set/v v01171D78_0, 0, 3;
+    %set/v v01172400_0, 0, 3;
+    %movi 8, 187, 8;
+    %set/v v01172350_0, 8, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %end;
+S_0112BE78 .scope task, "verify_read" "verify_read" 2 93, 2 93, S_0112C4D8;
+ .timescale -9 -10;
+v01171D78_0 .var "addr1", 2 0;
+v01172400_0 .var "addr2", 2 0;
+v01172350_0 .var "expected1", 7 0;
+v01171FE0_0 .var "expected2", 7 0;
+TD_tb_register_file.verify_read ;
+    %load/v 8, v01171D78_0, 3;
+    %set/v v01171D20_0, 8, 3;
+    %load/v 8, v01172400_0, 3;
+    %set/v v01172458_0, 8, 3;
+    %delay 10, 0;
+    %load/v 8, v01171E80_0, 8;
+    %load/v 16, v01172350_0, 8;
+    %cmp/u 8, 16, 8;
+    %inv 6, 1;
+    %mov 8, 6, 1;
+    %load/v 9, v011724B0_0, 8;
+    %load/v 17, v01171FE0_0, 8;
+    %cmp/u 9, 17, 8;
+    %inv 6, 1;
+    %or 8, 6, 1;
+    %jmp/0xz  T_2.2, 8;
+    %vpi_call 2 103 "$error", "[%0t] ERROR: r_addr1=%0d (got 0x%h, expected 0x%h) | r_addr2=%0d (got 0x%h, expected 0x%h)", $time, v01171D78_0, v01171E80_0, v01172350_0, v01172400_0, v011724B0_0, v01171FE0_0;
+    %jmp T_2.3;
+T_2.2 ;
+    %vpi_call 2 106 "$display", "[%0t] PASS: r_addr1=%0d=0x%h, r_addr2=%0d=0x%h", $time, v01171D78_0, v01171E80_0, v01172400_0, v011724B0_0;
+T_2.3 ;
+    %end;
+S_0112BDF0 .scope task, "write_reg" "write_reg" 2 80, 2 80, S_0112C4D8;
+ .timescale -9 -10;
+v011721F0_0 .var "addr", 2 0;
+v011722F8_0 .var "data", 7 0;
+E_01129638 .event posedge, v011383D8_0;
+TD_tb_register_file.write_reg ;
+    %set/v v011725B8_0, 1, 1;
+    %load/v 8, v011721F0_0, 3;
+    %set/v v011720E8_0, 8, 3;
+    %load/v 8, v011722F8_0, 8;
+    %set/v v01171DD0_0, 8, 8;
+    %wait E_01129638;
+    %set/v v011725B8_0, 0, 1;
+    %vpi_call 2 89 "$display", "[%0t] Wrote 0x%h to register %0d", $time, v011722F8_0, v011721F0_0;
+    %end;
+S_0112C890 .scope module, "uut" "register_file" 2 12, 3 19, S_0112C4D8;
+ .timescale -9 -10;
+L_01174570 .functor BUFZ 8, L_01173CA0, C4<00000000>, C4<00000000>, C4<00000000>;
+L_011749D0 .functor BUFZ 8, L_01173828, C4<00000000>, C4<00000000>, C4<00000000>;
+v01171870_0 .net *"_s24", 7 0, L_01173CA0; 1 drivers
+v011718C8_0 .net *"_s28", 7 0, L_01173828; 1 drivers
+v011719D0_0 .net "clk", 0 0, v011727C8_0; 1 drivers
+v01171920_0 .net "r_addr1", 2 0, v01171D20_0; 1 drivers
+v01171A80_0 .net "r_addr2", 2 0, v01172458_0; 1 drivers
+v01171A28_0 .alias "r_data1", 7 0, v01171E80_0;
+v01172610_0 .alias "r_data2", 7 0, v011724B0_0;
+v01172668 .array "reg_out", 7 0;
+v01172668_0 .net v01172668 0, 7 0, v01171608_0; 1 drivers
+v01172668_1 .net v01172668 1, 7 0, v01170FD8_0; 1 drivers
+v01172668_2 .net v01172668 2, 7 0, v011713A0_0; 1 drivers
+v01172668_3 .net v01172668 3, 7 0, v011713F8_0; 1 drivers
+v01172668_4 .net v01172668 4, 7 0, v01139198_0; 1 drivers
+v01172668_5 .net v01172668 5, 7 0, v01138E80_0; 1 drivers
+v01172668_6 .net v01172668 6, 7 0, v011388A8_0; 1 drivers
+v01172668_7 .net v01172668 7, 7 0, v01138DD0_0; 1 drivers
+v01172038_0 .net "rst", 0 0, v01172090_0; 1 drivers
+v01172718_0 .net "w_addr", 2 0, v011720E8_0; 1 drivers
+v01172770_0 .net "w_data", 7 0, v01171DD0_0; 1 drivers
+v01171ED8_0 .net "we", 0 0, v011725B8_0; 1 drivers
+RS_0113D2BC/0/0 .resolv tri, L_011723A8, L_01171F30, L_01172560, L_01172878;
+RS_0113D2BC/0/4 .resolv tri, L_01172820, L_01172980, L_011738D8, L_01173AE8;
+RS_0113D2BC .resolv tri, RS_0113D2BC/0/0, RS_0113D2BC/0/4, C4<zzzzzzzz>, C4<zzzzzzzz>;
+v011722A0_0 .net8 "we_bus", 7 0, RS_0113D2BC; 8 drivers
+L_011723A8 .part/pv L_0112DAF0, 0, 1, 8;
+L_01171E28 .part RS_0113D2BC, 0, 1;
+L_01171F30 .part/pv L_0112DAB8, 1, 1, 8;
+L_01172248 .part RS_0113D2BC, 1, 1;
+L_01172560 .part/pv L_0112DB28, 2, 1, 8;
+L_01172B90 .part RS_0113D2BC, 2, 1;
+L_01172878 .part/pv L_0112DDC8, 3, 1, 8;
+L_01172C40 .part RS_0113D2BC, 3, 1;
+L_01172820 .part/pv L_0112DFC0, 4, 1, 8;
+L_01172928 .part RS_0113D2BC, 4, 1;
+L_01172980 .part/pv L_011351F8, 5, 1, 8;
+L_01173BF0 .part RS_0113D2BC, 5, 1;
+L_011738D8 .part/pv L_0112DEE0, 6, 1, 8;
+L_01173A90 .part RS_0113D2BC, 6, 1;
+L_01173AE8 .part/pv L_01174810, 7, 1, 8;
+L_01173B98 .part RS_0113D2BC, 7, 1;
+L_01173CA0 .array/port v01172668, v01171D20_0;
+L_01173828 .array/port v01172668, v01172458_0;
+S_0112C230 .scope generate, "regs[0]" "regs[0]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0112919C .param/l "i" 3 35, +C4<00>;
+L_0112DAF0 .functor AND 1, v011725B8_0, L_01172140, C4<1>, C4<1>;
+v01171AD8_0 .net *"_s0", 3 0, L_01172508; 1 drivers
+v01171BE0_0 .net *"_s3", 0 0, C4<0>; 1 drivers
+v01171C90_0 .net *"_s4", 3 0, C4<0000>; 1 drivers
+v01171B30_0 .net *"_s6", 0 0, L_01172140; 1 drivers
+v01171C38_0 .net *"_s8", 0 0, L_0112DAF0; 1 drivers
+L_01172508 .concat [ 3 1 0 0], v011720E8_0, C4<0>;
+L_01172140 .cmp/eq 4, L_01172508, C4<0000>;
+S_0112C670 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112C230;
+ .timescale -9 -10;
+v011715B0_0 .alias "D", 7 0, v01172770_0;
+v01171608_0 .var "Q", 7 0;
+v01171B88_0 .alias "clk", 0 0, v011719D0_0;
+v01171978_0 .net "en", 0 0, L_01171E28; 1 drivers
+v01171818_0 .alias "rst", 0 0, v01172038_0;
+S_0112C1A8 .scope generate, "regs[1]" "regs[1]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0112913C .param/l "i" 3 35, +C4<01>;
+L_0112DAB8 .functor AND 1, v011725B8_0, L_01171F88, C4<1>, C4<1>;
+v011710E0_0 .net *"_s0", 3 0, L_01172198; 1 drivers
+v01171190_0 .net *"_s3", 0 0, C4<0>; 1 drivers
+v011711E8_0 .net *"_s4", 3 0, C4<0001>; 1 drivers
+v01171450_0 .net *"_s6", 0 0, L_01171F88; 1 drivers
+v01171500_0 .net *"_s8", 0 0, L_0112DAB8; 1 drivers
+L_01172198 .concat [ 3 1 0 0], v011720E8_0, C4<0>;
+L_01171F88 .cmp/eq 4, L_01172198, C4<0001>;
+S_0112C5E8 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112C1A8;
+ .timescale -9 -10;
+v01170F80_0 .alias "D", 7 0, v01172770_0;
+v01170FD8_0 .var "Q", 7 0;
+v01171660_0 .alias "clk", 0 0, v011719D0_0;
+v01170DC8_0 .net "en", 0 0, L_01172248; 1 drivers
+v01171030_0 .alias "rst", 0 0, v01172038_0;
+S_0112BCE0 .scope generate, "regs[2]" "regs[2]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0113061C .param/l "i" 3 35, +C4<010>;
+L_0112DB28 .functor AND 1, v011725B8_0, L_011729D8, C4<1>, C4<1>;
+v01170F28_0 .net *"_s0", 3 0, L_01172AE0; 1 drivers
+v01170ED0_0 .net *"_s3", 0 0, C4<0>; 1 drivers
+v01171558_0 .net *"_s4", 3 0, C4<0010>; 1 drivers
+v011714A8_0 .net *"_s6", 0 0, L_011729D8; 1 drivers
+v01171138_0 .net *"_s8", 0 0, L_0112DB28; 1 drivers
+L_01172AE0 .concat [ 3 1 0 0], v011720E8_0, C4<0>;
+L_011729D8 .cmp/eq 4, L_01172AE0, C4<0010>;
+S_0112C340 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112BCE0;
+ .timescale -9 -10;
+v011716B8_0 .alias "D", 7 0, v01172770_0;
+v011713A0_0 .var "Q", 7 0;
+v011717C0_0 .alias "clk", 0 0, v011719D0_0;
+v01170D18_0 .net "en", 0 0, L_01172B90; 1 drivers
+v01170D70_0 .alias "rst", 0 0, v01172038_0;
+S_0112BC58 .scope generate, "regs[3]" "regs[3]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_011302FC .param/l "i" 3 35, +C4<011>;
+L_0112DDC8 .functor AND 1, v011725B8_0, L_01172BE8, C4<1>, C4<1>;
+v01170E20_0 .net *"_s0", 3 0, L_01172C98; 1 drivers
+v01171710_0 .net *"_s3", 0 0, C4<0>; 1 drivers
+v01170E78_0 .net *"_s4", 3 0, C4<0011>; 1 drivers
+v01171240_0 .net *"_s6", 0 0, L_01172BE8; 1 drivers
+v01171088_0 .net *"_s8", 0 0, L_0112DDC8; 1 drivers
+L_01172C98 .concat [ 3 1 0 0], v011720E8_0, C4<0>;
+L_01172BE8 .cmp/eq 4, L_01172C98, C4<0011>;
+S_0112C120 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112BC58;
+ .timescale -9 -10;
+v01171768_0 .alias "D", 7 0, v01172770_0;
+v011713F8_0 .var "Q", 7 0;
+v01171298_0 .alias "clk", 0 0, v011719D0_0;
+v011712F0_0 .net "en", 0 0, L_01172C40; 1 drivers
+v01171348_0 .alias "rst", 0 0, v01172038_0;
+S_0112BAC0 .scope generate, "regs[4]" "regs[4]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0113013C .param/l "i" 3 35, +C4<0100>;
+L_0112DFC0 .functor AND 1, v011725B8_0, L_01172A30, C4<1>, C4<1>;
+v01138F88_0 .net *"_s0", 4 0, L_011728D0; 1 drivers
+v01139248_0 .net *"_s3", 1 0, C4<00>; 1 drivers
+v01139350_0 .net *"_s4", 4 0, C4<00100>; 1 drivers
+v01138FE0_0 .net *"_s6", 0 0, L_01172A30; 1 drivers
+v01138ED8_0 .net *"_s8", 0 0, L_0112DFC0; 1 drivers
+L_011728D0 .concat [ 3 2 0 0], v011720E8_0, C4<00>;
+L_01172A30 .cmp/eq 5, L_011728D0, C4<00100>;
+S_0112BBD0 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112BAC0;
+ .timescale -9 -10;
+v01139140_0 .alias "D", 7 0, v01172770_0;
+v01139198_0 .var "Q", 7 0;
+v011391F0_0 .alias "clk", 0 0, v011719D0_0;
+v011392F8_0 .net "en", 0 0, L_01172928; 1 drivers
+v01138F30_0 .alias "rst", 0 0, v01172038_0;
+S_0112BA38 .scope generate, "regs[5]" "regs[5]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0113069C .param/l "i" 3 35, +C4<0101>;
+L_011351F8 .functor AND 1, v011725B8_0, L_01172B38, C4<1>, C4<1>;
+v011386F0_0 .net *"_s0", 4 0, L_01172A88; 1 drivers
+v01139090_0 .net *"_s3", 1 0, C4<00>; 1 drivers
+v011390E8_0 .net *"_s4", 4 0, C4<00101>; 1 drivers
+v01139038_0 .net *"_s6", 0 0, L_01172B38; 1 drivers
+v011392A0_0 .net *"_s8", 0 0, L_011351F8; 1 drivers
+L_01172A88 .concat [ 3 2 0 0], v011720E8_0, C4<00>;
+L_01172B38 .cmp/eq 5, L_01172A88, C4<00101>;
+S_0112C098 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112BA38;
+ .timescale -9 -10;
+v011387F8_0 .alias "D", 7 0, v01172770_0;
+v01138E80_0 .var "Q", 7 0;
+v01138538_0 .alias "clk", 0 0, v011719D0_0;
+v01138590_0 .net "en", 0 0, L_01173BF0; 1 drivers
+v01138698_0 .alias "rst", 0 0, v01172038_0;
+S_0112BD68 .scope generate, "regs[6]" "regs[6]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_011301BC .param/l "i" 3 35, +C4<0110>;
+L_0112DEE0 .functor AND 1, v011725B8_0, L_01173930, C4<1>, C4<1>;
+v01138900_0 .net *"_s0", 4 0, L_01173C48; 1 drivers
+v011387A0_0 .net *"_s3", 1 0, C4<00>; 1 drivers
+v01138C70_0 .net *"_s4", 4 0, C4<00110>; 1 drivers
+v01138CC8_0 .net *"_s6", 0 0, L_01173930; 1 drivers
+v01138E28_0 .net *"_s8", 0 0, L_0112DEE0; 1 drivers
+L_01173C48 .concat [ 3 2 0 0], v011720E8_0, C4<00>;
+L_01173930 .cmp/eq 5, L_01173C48, C4<00110>;
+S_0112B9B0 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112BD68;
+ .timescale -9 -10;
+v01138BC0_0 .alias "D", 7 0, v01172770_0;
+v011388A8_0 .var "Q", 7 0;
+v01138B68_0 .alias "clk", 0 0, v011719D0_0;
+v01138C18_0 .net "en", 0 0, L_01173A90; 1 drivers
+v011384E0_0 .alias "rst", 0 0, v01172038_0;
+S_0112C918 .scope generate, "regs[7]" "regs[7]" 3 35, 3 35, S_0112C890;
+ .timescale -9 -10;
+P_0112FB3C .param/l "i" 3 35, +C4<0111>;
+L_01174810 .functor AND 1, v011725B8_0, L_01173880, C4<1>, C4<1>;
+v011385E8_0 .net *"_s0", 4 0, L_01173B40; 1 drivers
+v01138A60_0 .net *"_s3", 1 0, C4<00>; 1 drivers
+v01138D20_0 .net *"_s4", 4 0, C4<00111>; 1 drivers
+v01138488_0 .net *"_s6", 0 0, L_01173880; 1 drivers
+v01138640_0 .net *"_s8", 0 0, L_01174810; 1 drivers
+L_01173B40 .concat [ 3 2 0 0], v011720E8_0, C4<00>;
+L_01173880 .cmp/eq 5, L_01173B40, C4<00111>;
+S_0112CA28 .scope module, "reg_inst" "register_8bit" 3 37, 3 4, S_0112C918;
+ .timescale -9 -10;
+v01138A08_0 .alias "D", 7 0, v01172770_0;
+v01138DD0_0 .var "Q", 7 0;
+v011383D8_0 .alias "clk", 0 0, v011719D0_0;
+v01138748_0 .net "en", 0 0, L_01173B98; 1 drivers
+v01138850_0 .alias "rst", 0 0, v01172038_0;
+E_0112FE38 .event posedge, v01138850_0, v011383D8_0;
+    .scope S_0112C670;
+T_4 ;
+    %wait E_0112FE38;
+    %load/v 8, v01171818_0, 1;
+    %jmp/0xz  T_4.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01171608_0, 0, 0;
+    %jmp T_4.1;
+T_4.0 ;
+    %load/v 8, v01171978_0, 1;
+    %jmp/0xz  T_4.2, 8;
+    %load/v 8, v011715B0_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01171608_0, 0, 8;
+T_4.2 ;
+T_4.1 ;
+    %jmp T_4;
+    .thread T_4;
+    .scope S_0112C5E8;
+T_5 ;
+    %wait E_0112FE38;
+    %load/v 8, v01171030_0, 1;
+    %jmp/0xz  T_5.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01170FD8_0, 0, 0;
+    %jmp T_5.1;
+T_5.0 ;
+    %load/v 8, v01170DC8_0, 1;
+    %jmp/0xz  T_5.2, 8;
+    %load/v 8, v01170F80_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01170FD8_0, 0, 8;
+T_5.2 ;
+T_5.1 ;
+    %jmp T_5;
+    .thread T_5;
+    .scope S_0112C340;
+T_6 ;
+    %wait E_0112FE38;
+    %load/v 8, v01170D70_0, 1;
+    %jmp/0xz  T_6.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011713A0_0, 0, 0;
+    %jmp T_6.1;
+T_6.0 ;
+    %load/v 8, v01170D18_0, 1;
+    %jmp/0xz  T_6.2, 8;
+    %load/v 8, v011716B8_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011713A0_0, 0, 8;
+T_6.2 ;
+T_6.1 ;
+    %jmp T_6;
+    .thread T_6;
+    .scope S_0112C120;
+T_7 ;
+    %wait E_0112FE38;
+    %load/v 8, v01171348_0, 1;
+    %jmp/0xz  T_7.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011713F8_0, 0, 0;
+    %jmp T_7.1;
+T_7.0 ;
+    %load/v 8, v011712F0_0, 1;
+    %jmp/0xz  T_7.2, 8;
+    %load/v 8, v01171768_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011713F8_0, 0, 8;
+T_7.2 ;
+T_7.1 ;
+    %jmp T_7;
+    .thread T_7;
+    .scope S_0112BBD0;
+T_8 ;
+    %wait E_0112FE38;
+    %load/v 8, v01138F30_0, 1;
+    %jmp/0xz  T_8.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01139198_0, 0, 0;
+    %jmp T_8.1;
+T_8.0 ;
+    %load/v 8, v011392F8_0, 1;
+    %jmp/0xz  T_8.2, 8;
+    %load/v 8, v01139140_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01139198_0, 0, 8;
+T_8.2 ;
+T_8.1 ;
+    %jmp T_8;
+    .thread T_8;
+    .scope S_0112C098;
+T_9 ;
+    %wait E_0112FE38;
+    %load/v 8, v01138698_0, 1;
+    %jmp/0xz  T_9.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01138E80_0, 0, 0;
+    %jmp T_9.1;
+T_9.0 ;
+    %load/v 8, v01138590_0, 1;
+    %jmp/0xz  T_9.2, 8;
+    %load/v 8, v011387F8_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01138E80_0, 0, 8;
+T_9.2 ;
+T_9.1 ;
+    %jmp T_9;
+    .thread T_9;
+    .scope S_0112B9B0;
+T_10 ;
+    %wait E_0112FE38;
+    %load/v 8, v011384E0_0, 1;
+    %jmp/0xz  T_10.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011388A8_0, 0, 0;
+    %jmp T_10.1;
+T_10.0 ;
+    %load/v 8, v01138C18_0, 1;
+    %jmp/0xz  T_10.2, 8;
+    %load/v 8, v01138BC0_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v011388A8_0, 0, 8;
+T_10.2 ;
+T_10.1 ;
+    %jmp T_10;
+    .thread T_10;
+    .scope S_0112CA28;
+T_11 ;
+    %wait E_0112FE38;
+    %load/v 8, v01138850_0, 1;
+    %jmp/0xz  T_11.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01138DD0_0, 0, 0;
+    %jmp T_11.1;
+T_11.0 ;
+    %load/v 8, v01138748_0, 1;
+    %jmp/0xz  T_11.2, 8;
+    %load/v 8, v01138A08_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v01138DD0_0, 0, 8;
+T_11.2 ;
+T_11.1 ;
+    %jmp T_11;
+    .thread T_11;
+    .scope S_0112C4D8;
+T_12 ;
+    %set/v v011727C8_0, 0, 1;
+T_12.0 ;
+    %delay 50, 0;
+    %load/v 8, v011727C8_0, 1;
+    %inv 8, 1;
+    %set/v v011727C8_0, 8, 1;
+    %jmp T_12.0;
+    %end;
+    .thread T_12;
+    .scope S_0112C4D8;
+T_13 ;
+    %set/v v01172090_0, 1, 1;
+    %set/v v011725B8_0, 0, 1;
+    %set/v v011720E8_0, 0, 3;
+    %set/v v01171DD0_0, 0, 8;
+    %set/v v01171D20_0, 0, 3;
+    %set/v v01172458_0, 0, 3;
+    %delay 150, 0;
+    %set/v v01172090_0, 0, 1;
+    %vpi_call 2 42 "$display", "[%0t]: reset test", $time;
+    %set/v v01171D78_0, 0, 3;
+    %set/v v01172400_0, 0, 3;
+    %set/v v01172350_0, 0, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %set/v v01171D78_0, 1, 3;
+    %set/v v01172400_0, 0, 3;
+    %set/v v01172350_0, 0, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %vpi_call 2 47 "$display", "\012[%0t]: read/write test", $time;
+    %movi 8, 1, 3;
+    %set/v v011721F0_0, 8, 3;
+    %movi 8, 165, 8;
+    %set/v v011722F8_0, 8, 8;
+    %fork TD_tb_register_file.write_reg, S_0112BDF0;
+    %join;
+    %delay 10, 0;
+    %movi 8, 1, 3;
+    %set/v v01171D78_0, 8, 3;
+    %set/v v01172400_0, 0, 3;
+    %movi 8, 165, 8;
+    %set/v v01172350_0, 8, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %vpi_call 2 53 "$display", "\012[%0t]: concurrent read ports test", $time;
+    %movi 8, 2, 3;
+    %set/v v011721F0_0, 8, 3;
+    %movi 8, 60, 8;
+    %set/v v011722F8_0, 8, 8;
+    %fork TD_tb_register_file.write_reg, S_0112BDF0;
+    %join;
+    %movi 8, 3, 3;
+    %set/v v011721F0_0, 8, 3;
+    %movi 8, 240, 8;
+    %set/v v011722F8_0, 8, 8;
+    %fork TD_tb_register_file.write_reg, S_0112BDF0;
+    %join;
+    %delay 10, 0;
+    %movi 8, 2, 3;
+    %set/v v01171D78_0, 8, 3;
+    %movi 8, 3, 3;
+    %set/v v01172400_0, 8, 3;
+    %movi 8, 60, 8;
+    %set/v v01172350_0, 8, 8;
+    %movi 8, 240, 8;
+    %set/v v01171FE0_0, 8, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %vpi_call 2 60 "$display", "\012[%0t]: write suppression test", $time;
+    %set/v v011725B8_0, 0, 1;
+    %movi 8, 1, 3;
+    %set/v v011720E8_0, 8, 3;
+    %set/v v01171DD0_0, 1, 8;
+    %wait E_01129638;
+    %delay 10, 0;
+    %movi 8, 1, 3;
+    %set/v v01171D78_0, 8, 3;
+    %set/v v01172400_0, 0, 3;
+    %movi 8, 165, 8;
+    %set/v v01172350_0, 8, 8;
+    %set/v v01171FE0_0, 0, 8;
+    %fork TD_tb_register_file.verify_read, S_0112BE78;
+    %join;
+    %vpi_call 2 69 "$display", "\012[%0t]: address decoding test", $time;
+    %fork TD_tb_register_file.test_all_addresses, S_0112C3C8;
+    %join;
+    %vpi_call 2 73 "$display", "\012[%0t]: timing tests", $time;
+    %fork TD_tb_register_file.timing_tests, S_0112C010;
+    %join;
+    %vpi_call 2 76 "$display", "\012[%0t] All tests completed", $time;
+    %vpi_call 2 77 "$finish";
+    %end;
+    .thread T_13;
+    .scope S_0112C4D8;
+T_14 ;
+    %vpi_call 2 143 "$dumpfile", "sim_register.vcd";
+    %vpi_call 2 144 "$dumpvars", 1'sb0, S_0112C4D8;
+    %end;
+    .thread T_14;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_register.v";
+    "register.v";
