@@ -91,23 +91,23 @@ module tb_register_file;
     endtask
 
     task verify_read;
-		input [2:0] addr1;
-		input [2:0] addr2;
-		input [7:0] expected1;
-		input [7:0] expected2;
-		begin
-			r_addr1 = addr1;
-			r_addr2 = addr2;
-			#1;
-			if (r_data1 !== expected1 || r_data2 !== expected2) begin
-				$error("[%0t] ERROR: r_addr1=%0d (got 0x%h, expected 0x%h) | r_addr2=%0d (got 0x%h, expected 0x%h)",
-						$time, addr1, r_data1, expected1, addr2, r_data2, expected2);
-			end else begin
-				$display("[%0t] PASS: r_addr1=%0d=0x%h, r_addr2=%0d=0x%h",
-						$time, addr1, r_data1, addr2, r_data2);
-			end
-		end
-	endtask
+	input [2:0] addr1;
+	input [2:0] addr2;
+	input [7:0] expected1;
+	input [7:0] expected2;
+	begin
+	    r_addr1 = addr1;
+	    r_addr2 = addr2;
+	    #1;
+	    if (r_data1 !== expected1 || r_data2 !== expected2) begin
+	        $error("[%0t] ERROR: r_addr1=%0d (got 0x%h, expected 0x%h) | r_addr2=%0d (got 0x%h, expected 0x%h)",
+			$time, addr1, r_data1, expected1, addr2, r_data2, expected2);
+	    end else begin
+		$display("[%0t] PASS: r_addr1=%0d=0x%h, r_addr2=%0d=0x%h",
+			  $time, addr1, r_data1, addr2, r_data2);
+	    end
+	end
+    endtask
 
     task test_all_addresses;
         integer i;
